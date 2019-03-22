@@ -1,5 +1,5 @@
 <?php 
-  // this template is for the archive pages
+  // this template is for the all archive pages
   get_header(); 
 
 ?>

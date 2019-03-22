@@ -27,7 +27,24 @@
   }
   
   add_action('after_setup_theme', 'manu_features');
-
-
+  
+  
+  // adding custom post type in this function.php is not a good idea, since it's only avaible in the Manu19 theme.
+  // Once user change theme, they won't be able to access all posts using this type
+  // A better place is to store this into a special plugins called 'must use plugins' (under mu-plugins folder)
+  // I will copy & paste these code to 'manu-post-types.php' under mu-plugins folder 
+  // -------------------------------------------------
+  // function manu_post_types(){
+  //   //register or create custom post type
+  //   register_post_type('event', array(
+  //     'menu_icon' => 'dashicons-calendar-alt',
+  //     'public' => true,
+  //     'labels' => array( 'name' => 'Events'),
+  //   ));
+    
+  // }
+  
+  // //create / register custom post type
+  // add_action('init', 'manu_post_types');
 
 ?>
