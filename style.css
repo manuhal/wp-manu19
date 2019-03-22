@@ -1626,7 +1626,8 @@ body.login {
 
 .main-navigation .current-menu-item a,
 .main-navigation a:hover {
-  color: #FAF0CA;
+  /*color: #FAF0CA;*/
+  color: #f7e7a8
 }
 
 .page-banner {

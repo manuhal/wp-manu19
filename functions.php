@@ -19,10 +19,14 @@
   
   
   function manu_features(){
-      add_theme_support('title-tag');
+      add_theme_support('title-tag'); //add html page name based on post/page name
+      register_nav_menu('manu-header-menu', 'Header Menu Location'); //add menu & specify the location name 
+      register_nav_menu('manu-footer1-menu', 'Footer Menu Location One'); 
+      register_nav_menu('manu-footer2-menu', 'Footer Menu Location Two'); 
+    
   }
   
-  add_action('after_setup_theme', 'manu_features')
+  add_action('after_setup_theme', 'manu_features');
 
 
 
