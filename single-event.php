@@ -26,6 +26,27 @@
      <div class="generic-content">
       <?php the_content(); ?>
      </div>
+     
+     
+     <?php
+     
+        // get the value of 'related_program' custom field
+        $related_programs = get_field('related_programs');
+        // print_r($related_programs);
+
+        // show related-program if there is        
+        if ($related_programs){
+            echo '<hr class="section-break">';
+            echo '<h2 class="headline headline--small">Related Program</h2>';
+            echo '<ul class="link-list min-list">';
+            foreach($related_programs as $program){ 
+     ?>
+                <li><a href="<?php echo get_the_permalink($program); ?>"><?php echo get_the_title($program); ?></a></li>
+     <?php  
+            }  //end foreach
+            echo '</ul>';
+        } //endif
+     ?>
   
   </div>
 

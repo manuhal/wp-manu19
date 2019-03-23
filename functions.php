@@ -13,44 +13,49 @@
       wp_enqueue_script('manu_main_js', get_theme_file_uri('js/scripts-bundled.js'),NULL, microtime(), true);
   }
   
-  
   add_action('wp_enqueue_scripts', 'manu_files');
   
-  
+  //-----------------------------------------------------------------------------------------------
   
   function manu_features(){
       add_theme_support('title-tag'); //add html page name based on post/page name
       register_nav_menu('manu-header-menu', 'Header Menu Location'); //add menu & specify the location name 
       register_nav_menu('manu-footer1-menu', 'Footer Menu Location One'); 
       register_nav_menu('manu-footer2-menu', 'Footer Menu Location Two'); 
-    
   }
   
   add_action('after_setup_theme', 'manu_features');
   
   
-  // create custom archive query, but only for events type archive
-  function manu_adjust_queries($query){
-    if(!is_admin() && is_post_type_archive('event') && $query->is_main_query()){
-        $today = date('Y-m-d h:i:s');
-        $query->set('meta_key', 'event_date');
-        $query->set('orderby', 'meta_value' );  //'meta_value_num' is not working
-        $query->set('order', 'asc' );
-        $query->set('meta_query', array(
-                array(
-                  'key' => 'event_date',
-                  'compare' => '>=',
-                  'value' => $today,
-                  'type' => 'DATETIME',
-                )
-            ));
-        
-    }
+  //----------------------------------------------------------------------------------------------- 
   
+  // create custom archive query
+  function manu_adjust_queries($query){
     
+    if (!is_admin() AND is_post_type_archive('program') AND $query->is_main_query()){
+      $query->set('post_per_page', -1); // -1 means display all
+      $query->set('orderby', 'title');
+      $query->set('order', 'asc');
+    }
+    
+    //custom queries for events type archive
+    if(!is_admin() && is_post_type_archive('event') && $query->is_main_query()){
+      //NOTE: $query->is_main_query(): to make sure that this query is default url-based query
+      $today = date('Y-m-d h:i:s');
+      $query->set('meta_key', 'event_date');
+      $query->set('orderby', 'meta_value' );  //'meta_value_num' is not working
+      $query->set('order', 'asc' );
+      $query->set('meta_query', array(
+              array(
+                'key' => 'event_date',
+                'compare' => '>=',
+                'value' => $today,
+                'type' => 'DATETIME',
+              )
+          ));
+    }
   }
   
-  //NOTE: $query->is_main_query(): to make sure that this query is default url-based query
   
   add_action('pre_get_posts', 'manu_adjust_queries');
   
