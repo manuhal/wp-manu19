@@ -29,6 +29,32 @@
   add_action('after_setup_theme', 'manu_features');
   
   
+  // create custom archive query, but only for events type archive
+  function manu_adjust_queries($query){
+    if(!is_admin() && is_post_type_archive('event') && $query->is_main_query()){
+        $today = date('Y-m-d h:i:s');
+        $query->set('meta_key', 'event_date');
+        $query->set('orderby', 'meta_value' );  //'meta_value_num' is not working
+        $query->set('order', 'asc' );
+        $query->set('meta_query', array(
+                array(
+                  'key' => 'event_date',
+                  'compare' => '>=',
+                  'value' => $today,
+                  'type' => 'DATETIME',
+                )
+            ));
+        
+    }
+  
+    
+  }
+  
+  //NOTE: $query->is_main_query(): to make sure that this query is default url-based query
+  
+  add_action('pre_get_posts', 'manu_adjust_queries');
+  
+  
   // adding custom post type in this function.php is not a good idea, since it's only avaible in the Manu19 theme.
   // Once user change theme, they won't be able to access all posts using this type
   // A better place is to store this into a special plugins called 'must use plugins' (under mu-plugins folder)

@@ -20,10 +20,23 @@
         <!--EVENTS------------------------------------------------------------------------->
         <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
         <?php
-          //create custom query
+          //create custom query for EVENTS
+          // $today = date('Ymd');
+          $today = date('Y-m-d h:i:s');
           $home_events = new WP_Query(array(
             'posts_per_page' => 2,
             'post_type' => 'event',
+            'order' => 'asc',  //default is DESC
+            'meta_key' => 'event_date',
+            'orderby' => 'meta_value', //default value is 'post_date'. you can use 'rand' for random. use meta_value or meta_value_num for custom
+            'meta_query' => array(
+                array(
+                  'key' => 'event_date',
+                  'compare' => '>=',
+                  'value' => $today,
+                  'type' => 'DATETIME',
+                ),
+            ),
           ));
           
           while($home_events->have_posts()){
@@ -31,8 +44,12 @@
         ?>
           <div class="event-summary">
             <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
-              <span class="event-summary__month"><?php the_time('M'); ?></span>
-              <span class="event-summary__day"><?php the_time('d'); ?></span>  
+              <span class="event-summary__month"><?php 
+                //use ACF function. more info @ https://www.advancedcustomfields.com/resources/the_field/
+                $date_field = get_field('event_date', false, false);
+                $event_date = new DateTime($date_field);
+                echo $event_date->format('M'); ?></span>
+              <span class="event-summary__day"><?php echo $event_date->format('d');?></span>  
             </a>
             <div class="event-summary__content">
               <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>

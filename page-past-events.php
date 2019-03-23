@@ -1,5 +1,5 @@
 <?php 
-  // this template is for the EVENT type archives
+  // this template is for the PAST EVENT type archives
   get_header(); 
   // echo 'EVENT ARCHIVE';
 
@@ -8,17 +8,37 @@
   <div class="page-banner">
     <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg')?>);"></div>
     <div class="page-banner__content container container--narrow">
-      <h1 class="page-banner__title">All Events</h1>
+      <h1 class="page-banner__title">Past Events</h1>
       <div class="page-banner__intro">
-        <p>Come and see all events in our campus</p>
+        <p>See our past events in our campus</p>
       </div>
     </div>  
   </div>
   
   <div class="container container--narrow page-section">
     <?php
-      while(have_posts()){
-        the_post();
+    
+      //create custom query for PAST EVENTS
+      $today = date('Y-m-d h:i:s');
+      $past_events = new WP_Query(array(
+        // 'posts_per_page' => 1,
+        'paged' => get_query_var('paged',1),
+        'post_type' => 'event',
+        'order' => 'asc',  //default is DESC
+        'meta_key' => 'event_date',
+        'orderby' => 'meta_value', //default value is 'post_date'. you can use 'rand' for random. use meta_value or meta_value_num for custom
+        'meta_query' => array(
+            array(
+              'key' => 'event_date',
+              'compare' => '<',
+              'value' => $today,
+              'type' => 'DATETIME',
+            ),
+        ),
+      ));
+      
+      while($past_events->have_posts()){
+        $past_events->the_post();
     ?>
 
       <div class="event-summary">
@@ -40,9 +60,14 @@
         
       } //end while-loop
       
-      echo paginate_links();  //activate pagination
+      //activate pagination, need special tweak for custom query
+      echo paginate_links(array(
+          'total' => $past_events->max_num_pages,
+          
+        ));  
+      
+      
     ?>
-    <p>Check out our <a href="<?php echo site_url('/past-events'); ?> ">past event archive</a></p>
     
   </div>
 
