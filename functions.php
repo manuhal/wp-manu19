@@ -19,7 +19,10 @@
   
   function manu_features(){
       add_theme_support('title-tag'); //add html page name based on post/page name
-      register_nav_menu('manu-header-menu', 'Header Menu Location'); //add menu & specify the location name 
+      add_theme_support('post-thumbnails'); //add feature-image functionality. also need to add to the custom post-type in the  MU-Plugin 
+      add_image_size('profile_landscape', 400, 260, true); // crop = true
+      add_image_size('profile_portrait', 480, 650, true); // crop = true
+      register_nav_menu('manu-header-menu', 'Header Menu Location'); //register menu & specify the location name 
       register_nav_menu('manu-footer1-menu', 'Footer Menu Location One'); 
       register_nav_menu('manu-footer2-menu', 'Footer Menu Location Two'); 
   }

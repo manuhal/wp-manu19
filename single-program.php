@@ -1,8 +1,13 @@
 <?php
- //template for single PROGRAM post type
- get_header();
-
- while(have_posts()){
+  //template for single PROGRAM post type
+  
+  // a simple test, showing how important to run wp_reset_postdata() after running custom query (WP_Query)
+  // the value of get_the_ID() is suddenly change after running the WP_Query()
+  // echo 'this doc ID =' . get_the_ID();
+  
+  get_header();
+  
+  while(have_posts()){
      the_post(); ?>
 
   <div class="page-banner">
@@ -28,7 +33,54 @@
      </div>
      
        <?php
-          //create custom query for event_date and related_programs post-type
+          //custom query for related professors------------------------------------------
+          $related_professors = new WP_Query(array(
+            'posts_per_page' => -1, //show all records
+            'post_type' => 'professor',
+            'order' => 'asc',  //default is DESC
+            'orderby' => 'title',
+            'meta_query' => array( //meta_query can have multiple selections
+                array(//select professor(s) that has 'related_programs' field match with this program-ID
+                    'key' => 'related_programs',
+                    'compare' => 'like',
+                    'value' => '"'. get_the_ID() . '"', //we need to wrap this with double quotes
+                    // 'value' => get_the_ID(), //kayanya without quotes is working juga
+                ),
+            ),
+          ));
+          
+          //show the professor(s) that related with this program if there is
+          if ($related_professors->have_posts()){
+          
+              echo '<hr class="section-break"/>';
+              echo '<h2 class="headline headline--small">' . get_the_title() .' Professor(s)</h2>';
+              echo '<ul class="professor-cards">';
+              
+              while($related_professors->have_posts()){
+                $related_professors->the_post();
+            ?>
+              <li class="professor-card__list-item">
+                <a class="professor-card" href="<?php the_permalink(); ?>">
+                  <img class="professor-card__image" src="<?php the_post_thumbnail_url('profile_landscape'); ?>">
+                  <span class="professor-card__name"><?php the_title(); ?></span>
+                </a>
+              </li>
+              
+            <?php
+              } //end-while
+              echo '</ul>';
+              
+              //Restore original Post Data
+              wp_reset_postdata();
+              
+            // a simple test, showing how important to run wp_reset_postdata() after running custom query (WP_Query)
+            // the value of get_the_ID() is suddenly change after running the WP_Query()
+            // echo 'this doc ID =' . get_the_ID();
+              
+          }//end-if     
+       
+       
+          //create custom query for event_date and related_programs post-type-------------------------------------
           // $today = date('Ymd');
           $today = date('Y-m-d h:i:s');
           $related_events = new WP_Query(array(
