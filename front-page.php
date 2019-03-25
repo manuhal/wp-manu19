@@ -39,34 +39,14 @@
             ),
           ));
           
-          while($home_events->have_posts()){
+          while($home_events->have_posts()):
             $home_events->the_post();
-        ?>
-          <div class="event-summary">
-            <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
-              <span class="event-summary__month"><?php 
-                //use ACF function. more info @ https://www.advancedcustomfields.com/resources/the_field/
-                $date_field = get_field('event_date', false, false);
-                $event_date = new DateTime($date_field);
-                echo $event_date->format('M'); ?></span>
-              <span class="event-summary__day"><?php echo $event_date->format('d');?></span>  
-            </a>
-            <div class="event-summary__content">
-              <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
-              <p>
-                <?php 
-                  if(has_excerpt()){
-                    // the_excerpt(); //using this causing extra margin space on the stop. 
-                    echo get_the_excerpt();
-                }else{
-                      echo wp_trim_words( get_the_content(), 18, '...' ); 
-                }?> 
-              <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a></p>
-            </div>
-          </div>          
+            
+            // get_template_part( 'partials/event');
+            get_template_part( 'partials/content', 'event');
+
+          endwhile;
           
-        <?php
-          }
           //Restore original Post Data
           wp_reset_postdata();
         ?>
