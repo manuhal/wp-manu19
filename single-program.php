@@ -8,17 +8,9 @@
   get_header();
   
   while(have_posts()){
-     the_post(); ?>
-
-  <div class="page-banner">
-    <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg')?>);"></div>
-    <div class="page-banner__content container container--narrow">
-      <h1 class="page-banner__title"><?php the_title() ?></h1>
-      <div class="page-banner__intro">
-        <!--<p>!!!! WILL FIX THIS LATER !!!!</p>-->
-      </div>
-    </div>  
-  </div>
+      the_post(); 
+      page_banner();
+?>
   
   <div class="container container--narrow page-section">
      <div class="metabox metabox--position-up metabox--with-home-link">
@@ -61,7 +53,7 @@
             ?>
               <li class="professor-card__list-item">
                 <a class="professor-card" href="<?php the_permalink(); ?>">
-                  <img class="professor-card__image" src="<?php the_post_thumbnail_url('profile_landscape'); ?>">
+                  <img class="professor-card__image" src="<?php the_post_thumbnail_url('prof_landscape'); ?>">
                   <span class="professor-card__name"><?php the_title(); ?></span>
                 </a>
               </li>

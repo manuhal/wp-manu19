@@ -1,4 +1,34 @@
 <?php
+
+  function page_banner($args = null){
+    
+    // echo $page_banner_image['sizes']['page_banner'];
+    // echo get_theme_file_uri('images/ocean.jpg')
+    
+    if(!$args['title']) $args['title'] = get_the_title();
+
+    if(!$args['subtitle']) $args['subtitle'] = get_field('page_banner_subtitle');
+
+    if(!$args['banner_img']) {
+      $page_banner_image = get_field('page_banner_background_image');
+      if($page_banner_image){
+        $args['banner_img'] = $page_banner_image['sizes']['page_banner'];
+      }else{
+        $args['banner_img'] = get_theme_file_uri('images/ocean.jpg');
+      }
+    }
+    echo '<div class="page-banner">';
+    echo '  <div class="page-banner__bg-image" style="background-image: url('. $args['banner_img'] .');"></div> ';
+    echo '  <div class="page-banner__content container container--narrow">';
+    echo '    <h1 class="page-banner__title">' . $args['title'] .'</h1>';
+    echo '    <div class="page-banner__intro">';
+    echo '      <p>' . $args['subtitle'] . '</p>';
+    echo '    </div>';
+    echo '  </div>';
+    echo '</div>';
+    
+    // echo '$page_banner_image=' ; print_r($page_banner_image);
+  }
   
   function manu_files(){
       wp_enqueue_style('google-font','https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
@@ -20,8 +50,9 @@
   function manu_features(){
       add_theme_support('title-tag'); //add html page name based on post/page name
       add_theme_support('post-thumbnails'); //add feature-image functionality. also need to add to the custom post-type in the  MU-Plugin 
-      add_image_size('profile_landscape', 400, 260, true); // crop = true
-      add_image_size('profile_portrait', 480, 650, true); // crop = true
+      add_image_size('prof_landscape', 400, 260, true); // crop = true
+      add_image_size('prof_portrait', 480, 650, true); // crop = true
+      add_image_size('page_banner', 1500, 350, true); // crop = true
       register_nav_menu('manu-header-menu', 'Header Menu Location'); //register menu & specify the location name 
       register_nav_menu('manu-footer1-menu', 'Footer Menu Location One'); 
       register_nav_menu('manu-footer2-menu', 'Footer Menu Location Two'); 

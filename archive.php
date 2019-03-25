@@ -1,48 +1,14 @@
 <?php 
   // this template is for the all archive pages
   get_header(); 
+  
+  page_banner(array(
+    'title'=> get_the_archive_title(),
+    'subtitle' => get_the_archive_description(),
+  ));
 
 ?>
 
-  <div class="page-banner">
-    <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg')?>);"></div>
-    <div class="page-banner__content container container--narrow">
-      <h1 class="page-banner__title">
-          <?php
-            //this is too much work for all archives (author, date, month, year, category, etc)
-            // if(is_category()){
-            //     echo 'All posts in <b>'; single_cat_title(); '</b>';
-            // }else if(is_author()){
-            //     echo 'All Posts by <b>'; the_author(); '</b>';
-            // }
-            
-            //new way for handling archive
-            // the_archive_title();
-          
-            //or we can combine:
-            if(is_category()){
-                echo 'All posts in <b>'; single_cat_title(); '</b>';
-            }else if(is_author()){
-                echo 'All Posts by <b>'; the_author(); '</b>';
-            } else{
-                the_archive_title();
-            }
-          
-          
-          ?>
-      </h1>
-      <div class="page-banner__intro">
-        <p>
-        <?php
-            // this will display the description for the archive
-            // but we need to add the description (ie: Biographical Info or Category Description)
-            // otherwise it will show emtpy text.
-            the_archive_description(); 
-        ?>
-        </p>
-      </div>
-    </div>  
-  </div>
   
   <div class="container container--narrow page-section">
     <?php

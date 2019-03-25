@@ -26,11 +26,11 @@
             <li <?php if(get_post_type()=='post') echo 'class="current-menu-item"'?>><a href="<?php echo site_url('blog');?>">Blog</a></li>
           </ul>
           <!--use wordpress menu system-->
-          // <?php
+          <?php
           //   wp_nav_menu(array(
           //     'theme_location' => 'manu-header-menu', 
           //   ));  
-          // ?>
+          ?>
         </nav>
         <div class="site-header__util">
           <a href="#" class="btn btn--small btn--orange float-left push-right">Login</a>
