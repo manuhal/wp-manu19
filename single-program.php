@@ -42,13 +42,13 @@
           ));
           
           //show the professor(s) that related with this program if there is
-          if ($related_professors->have_posts()){
+          if ($related_professors->have_posts()):
           
               echo '<hr class="section-break"/>';
               echo '<h2 class="headline headline--small">' . get_the_title() .' Professor(s)</h2>';
               echo '<ul class="professor-cards">';
               
-              while($related_professors->have_posts()){
+              while($related_professors->have_posts()):
                 $related_professors->the_post();
             ?>
               <li class="professor-card__list-item">
@@ -59,7 +59,7 @@
               </li>
               
             <?php
-              } //end-while
+              endwhile; 
               echo '</ul>';
               
               //Restore original Post Data
@@ -69,7 +69,7 @@
             // the value of get_the_ID() is suddenly change after running the WP_Query()
             // echo 'this doc ID =' . get_the_ID();
               
-          }//end-if     
+          endif; //end-if     
        
        
           //create custom query for event_date and related_programs post-type-------------------------------------
@@ -113,6 +113,25 @@
               //Restore original Post Data
               wp_reset_postdata();
               
+          endif;
+          
+          $related_campuses = get_field('related_campuses');
+          // print_r($related_campuses);
+          
+          if($related_campuses):
+            
+            echo '<hr class="section-break">';
+            echo '<h2 class="headline headline--small">' .get_the_title() . ' is available at this Campus(es):';
+            echo '<ul class="min-list link-list">';
+            
+            foreach($related_campuses as $campus):
+            ?>  
+              <li><a href="<?php the_permalink($campus); ?>"><?php echo get_the_title($campus); ?></a></li>
+              
+            <?php   
+            endforeach;
+            echo '</ul>';
+            
           endif;
         ?>
   
